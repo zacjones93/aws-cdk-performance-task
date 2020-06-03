@@ -1,0 +1,23 @@
+{
+  "name": "email-caputure-form",
+  "version": "0.1.0",
+  "bin": {
+    "email-caputure-form": "bin/email-caputure-form.js"
+  },
+  "scripts": {
+    "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
+    "cdk": "cdk",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.42.1",
+    "aws-cdk": "1.42.1",
+    "jest": "^25.5.0"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-sns": "1.42.1",
+    "@aws-cdk/aws-sns-subscriptions": "1.42.1",
+    "@aws-cdk/aws-sqs": "1.42.1",
+    "@aws-cdk/core": "1.42.1"
+  }
+}
