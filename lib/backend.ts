@@ -20,5 +20,7 @@ export class Backend extends cdk.Construct {
         TABLE_NAME: emailsTable.tableName
       }
      })
+
+     emailsTable.grantReadWriteData(this.handler)
   } 
 }
