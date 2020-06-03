@@ -24,6 +24,22 @@ const getAllEmails = async () => {
     return scanResult;
 };
 
+const addSubscriber = async (data: {email: string; first_name: string; id: string}) => {
+    const {id, email, first_name } = data;
+    if (email && email !== "") {
+        await dynamo.put({
+            TableName: tableName,
+            Item: {
+                id: "totally_random_id",
+                email,
+                first_name
+            }
+        }).promise()
+    }
+
+    return email;
+}
+
 exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
     try {
         const { httpMethod, body} = event;
@@ -33,6 +49,20 @@ exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
 
             return createResponse(response.Items || []);
         }
+
+        if (!body) {
+            return createResponse("Missing request body", 500);
+        }
+
+        const data = JSON.parse(body);
+
+        if (httpMethod === "POST") {
+            const subscriber = await addSubscriber(data);
+            return subscriber
+                ? createResponse(`${subscriber} added to the database`)
+                : createResponse("Subscriber is missing", 500)
+        }
+
         return createResponse(
             `We only accept GET requests for now, not ${httpMethod}`,
             500
