@@ -40,6 +40,21 @@ const addSubscriber = async (data: {email: string; first_name: string; id: strin
     return email;
 }
 
+const deleteSubscriber = async (data: {id: string}) => { 
+    const {id} = data;
+
+    if (id && id !== "") {
+        await dynamo.delete({
+            TableName: tableName, 
+            Key: {
+                id
+            }
+        }).promise()
+    }
+
+    return id
+}
+
 exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
     try {
         const { httpMethod, body} = event;
@@ -61,6 +76,13 @@ exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
             return subscriber
                 ? createResponse(`${subscriber} added to the database`)
                 : createResponse("Subscriber is missing", 500)
+        }
+
+        if (httpMethod === "DELETE") {
+            const id = await deleteSubscriber(data);
+            return id
+                ? createResponse(`Subscriber with an id of ${id} deleted from the database`)
+                : createResponse("ID is missing", 500)
         }
 
         return createResponse(
