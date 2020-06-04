@@ -1,5 +1,6 @@
 /// <reference types="aws-sdk" />
-const AWS = require("aws-sdk");
+import AWS = require("aws-sdk");
+import {v4 as uuid } from "uuid";
 
 const tableName = process.env.TABLE_NAME || "";
 const dynamo = new AWS.DynamoDB.DocumentClient();
@@ -30,7 +31,7 @@ const addSubscriber = async (data: {email: string; first_name: string; id: strin
         await dynamo.put({
             TableName: tableName,
             Item: {
-                id: "totally_random_id",
+                id: id || uuid(),
                 email,
                 first_name
             }
